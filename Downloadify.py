@@ -51,7 +51,7 @@ for songs in tags:
         #Execute bash command in bash
         subprocess.Popen(bashCommand,shell=True,cwd=working_path).wait()
         #Copy from local source to cloud 
-        copy2(working_path+"/"+name+".mp3",'/home/shiv/googledrive/Music')
+        copy2(working_path+name+".mp3",'/home/shiv/googledrive/Music')
         print "DOWNLOADED " + name
     else:
         print "File already exists: " + name
