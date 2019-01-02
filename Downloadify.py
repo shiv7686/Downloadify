@@ -57,3 +57,8 @@ for songs in tags:
         print "File already exists: " + name
         
 print "Downloaded " + str(count) + " songs"
+
+# Notes to self:
+#     --> get spotify song list
+#     --> go to youtube and download the mp3 file of the first youtube link
+#     --> store it on working directory, and then copy it to google drive
