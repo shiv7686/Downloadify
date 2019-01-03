@@ -8,6 +8,7 @@ from bs4 import BeautifulSoup
 import subprocess
 import popen
 from shutil import copy2
+import eyed3
 
 #if a direcotry is provided, then work in that directory
 #else work in current directory
@@ -33,10 +34,15 @@ print "Parsed list"
 count = 0
 for songs in tags:
     name = songs.find_all('span')[0].string 
+    fname = name + ".mp3"
     #Download song if not in list
-    if (name + ".mp3" not in list):
+    if (fname.encode("utf-8") not in list):
         count += 1
+        album = songs.find_all('span')[-1].string 
         author = songs.find_all('span')[2].string
+        artists = []
+        for artist in songs.find_all('span')[2:-1]:
+            artists.append(artist.string)
         #This is the search link 
         url = "https://www.youtube.com/results?search_query=" + name + " by " + author
         #Youtube webpage
@@ -46,19 +52,22 @@ for songs in tags:
         vid = (meat.findAll(attrs={'class':'yt-uix-tile-link'})[0])
         url = "https://www.youtube.com" + vid['href']
         #Extract mp3 from youtube link
-        bashCommand = "youtube-dl -f 'bestaudio' --extract-audio --audio-format mp3 --audio-quality 0 --embed-thumbnail --add-metadata --output '" +  name + ".%(ext)s\' " + url
-        print "Downloading " + name
+        bashCommand = "/usr/local/bin/youtube-dl -f 'bestaudio' --extract-audio --audio-format mp3 --audio-quality 0 --embed-thumbnail --add-metadata --output '" +  name + ".%(ext)s\' " + url
+        print "Downloading " + fname
         #Execute bash command in bash
         subprocess.Popen(bashCommand,shell=True,cwd=working_path).wait()
+        audiofile = eyed3.load(working_path+fname)
+        audiofile.tag.album = unicode(album)
+        audiofile.tag.save()
         #Copy from local source to cloud 
-        copy2(working_path+name+".mp3",'/home/shiv/googledrive/Music')
+        copy2(working_path+fname,'/home/shiv/googledrive/Music')
         print "DOWNLOADED " + name
     else:
-        print "File already exists: " + name
+        print "File already exists: " + name.encode("utf8")
         
 print "Downloaded " + str(count) + " songs"
 
 # Notes to self:
 #     --> get spotify song list
-#     --> go to youtube and download the mp3 file of the first youtube link
-#     --> store it on working directory, and then copy it to google drive
+# #     --> go to youtube and download the mp3 file of the first youtube link
+# #     --> store it on working directory, and then copy it to google drive
