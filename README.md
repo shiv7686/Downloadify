@@ -1,3 +1,5 @@
+![alt text](http://url/to/img.png)
+
 # Downloadify
 Downloadify is a python and bash script which downloads any Spotify album onto your local storage
 
@@ -14,10 +16,10 @@ The reason why I included the options of two paths is because, I wanted to store
 
 ### How does it work?
 
---> Check if the song exists in the local music folder (or the optional_download_location)
---> If the songs EXISTS, do not download the song
---> If the song DOESN'T EXIST, then get the first link from Youtube for that song and download the .mp3 of it
---> If a optional_extra_download_path is provided, then copy the song to the path
+--> Check if the song exists in the local music folder (or the optional_download_location)</br>
+--> If the songs EXISTS, do not download the song</br>
+--> If the song DOESN'T EXIST, then get the first link from Youtube for that song and download the .mp3 of it</br>
+--> If a optional_extra_download_path is provided, then copy the song to the path</br>
 
 ### Todos
 
