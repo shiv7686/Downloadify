@@ -1,4 +1,4 @@
-![alt text](http://url/to/img.png)
+![](https://github.com/shiv7686/Downloadify/blob/master/logo.png)
 
 # Downloadify
 Downloadify is a python and bash script which downloads any Spotify album onto your local storage
