@@ -1,15 +1,29 @@
 # Downloadify
-Download any Spotify playlist to your local storage (and google drive) </br> </br>
-This python script takes two parameters, the Spotify link and an optional directory path to work on. If a path is not provided, it will work in the current directory. 
+Downloadify is a python and bash script which downloads any Spotify album onto your local storage
 
+### Installation
+
+Dowloadify requires youtube-dl (a command line program) and Beautiful soup
+
+To run the script, run the command below in bash
+
+```sh
+$ python Downloadify.py [spotify_playlist_url] [optional_download_location] [optional_extra_download_path]
 ```
-python Downloadify.py [https://open.spotify.com/playlist/ID] [/optional/path/to/work/on]
+The reason why I included the options of two paths is because, I wanted to store the Sotify playlist on my local device as well as on the cloud (a virtual Google Drive folder is mounted to my device). If a optional_download_location is provided, then it will download the songs to the specified directory. If its not provided then it will download the songs to the current directory. If optional_extra_download_path is provided, it will ONLY copy the downloaded songs to the specified path, else it will do nothing.
 
-```
+### How does it work?
 
-I am assuming there is a google drive storage mounted virtually to your device. The script will first download the songs on the working path and then copy the files to the google drive folder. This has been done to improve overall speed. I am also assuming that there is a cronjob command to execute this script at an appropriate time (so that we can update the local list as the spotify list is updated)
+--> Check if the song exists in the local music folder (or the optional_download_location)
+--> If the songs EXISTS, do not download the song
+--> If the song DOESN'T EXIST, then get the first link from Youtube for that song and download the .mp3 of it
+--> If a optional_extra_download_path is provided, then copy the song to the path
 
-On my Android phone, I have installed FolderSync which will sync the google drive folder to the phone's local storage. It is preferable to do this at a time when the internet usage is minimal. (Around 03:00 in my case)
+### Todos
 
-<b>Conclusion:</b></br>
-Using this script, I was able to download my favorite songs from a Spotify playlist, and store them on my laptop's and phone's local storage, as well as on google drive to access them online.
+ - Make it 'installable' from the terminal
+ - Add a progress bar
+
+License
+----
+MIT
