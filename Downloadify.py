@@ -18,9 +18,14 @@ else:
     #had to do this as the program is listed in Desktop, making it download songs in Desktop
     working_path =  subprocess.check_output(['pwd']).strip() + "/"
 
-#List of songs that already exist on cloud
+if (len(sys.argv) > 3):
+    copy_path = sys.argv[3]
+else:
+    copy_path = ""
+
+#List of songs that already exist locally
 list = []
-for root, dirs, files in os.walk('/home/shiv/googledrive/Music'): 
+for root, dirs, files in os.walk(working_path): 
     for file in files:  
         if file.endswith('.mp3'): 
             list.append(str(file))
@@ -35,14 +40,15 @@ count = 0
 for songs in tags:
     name = songs.find_all('span')[0].string 
     fname = name + ".mp3"
+    fname = fname.encode("utf8")
     #Download song if not in list
-    if (fname.encode("utf-8") not in list):
+    if (fname not in list):
         count += 1
         album = songs.find_all('span')[-1].string 
         author = songs.find_all('span')[2].string
-        artists = []
-        for artist in songs.find_all('span')[2:-1]:
-            artists.append(artist.string)
+            # artists = []
+            # for artist in songs.find_all('span')[2:-1]:
+            #     artists.append(artist.string)
         #This is the search link 
         url = "https://www.youtube.com/results?search_query=" + name + " by " + author
         #Youtube webpage
@@ -56,18 +62,17 @@ for songs in tags:
         print "Downloading " + fname
         #Execute bash command in bash
         subprocess.Popen(bashCommand,shell=True,cwd=working_path).wait()
-        audiofile = eyed3.load(working_path+fname)
+        #Add the album name to meta data
+        audiofile = eyed3.load(working_path+name + ".mp3")
         audiofile.tag.album = unicode(album)
         audiofile.tag.save()
-        #Copy from local source to cloud 
-        copy2(working_path+fname,'/home/shiv/googledrive/Music')
+        #if a copy path has been provided (usually a cloud folder)
+        if (copy_path != ""):
+            #Copy from local source to cloud 
+            copy2(working_path+fname,copy_path)
+            print "copying to " + copy_path
         print "DOWNLOADED " + name
     else:
         print "File already exists: " + name.encode("utf8")
         
 print "Downloaded " + str(count) + " songs"
-
-# Notes to self:
-#     --> get spotify song list
-# #     --> go to youtube and download the mp3 file of the first youtube link
-# #     --> store it on working directory, and then copy it to google drive
